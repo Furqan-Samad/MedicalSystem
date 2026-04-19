@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice - {{ patient[1] }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; }
+        .invoice-container { max-width: 800px; margin: 20px auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #eef0f2; }
+        .header { text-align: center; border-bottom: 3px solid #007bff; padding-bottom: 20px; margin-bottom: 30px; }
+        .patient-info { background: #fdfdfd; padding: 25px; border-radius: 10px; border: 1px solid #f1f1f1; margin-bottom: 25px; }
+        .service-details { border-left: 4px solid #007bff; padding-left: 20px; margin-bottom: 30px; }
+        .total-box { background: #f8f9fa; padding: 20px; border-radius: 8px; display: inline-block; min-width: 250px; }
+        .total { font-size: 26px; font-weight: bold; color: #2d3436; }
+        .doctor-signature { margin-top: 50px; text-align: right; }
+        @media print { .no-print { display: none; } body { background: white; } .invoice-container { box-shadow: none; border: none; margin: 0; width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <div class="header">
+            <h1 class="text-primary fw-bold">MedSystem Pro</h1>
+            <p class="text-secondary mb-0">Official Medical Invoice & Routing Slip</p>
+            <small class="text-muted">ID: #INV-2026-{{ patient[0] }} | Generated: {{ now.strftime('%Y-%m-%d %H:%M') if now else '2026-04-19' }}</small>
+        </div>
+
+        <div class="patient-info">
+            <h6 class="text-uppercase fw-bold text-muted mb-3 small">Patient Information</h6>
+            <div class="row">
+                <div class="col-6">
+                    <p class="mb-1"><strong>Name:</strong> {{ patient[1] }}</p>
+                    <p class="mb-1"><strong>Phone:</strong> {{ patient[2] }}</p>
+                    <p class="mb-1"><strong>Age/Gender:</strong> {{ patient[3] }}y / {{ patient[4] }}</p>
+                </div>
+                <div class="col-6 text-end">
+                    <p class="mb-1 text-primary fw-bold" style="font-size: 1.1rem;">
+                       <p><strong>Consultant:</strong> {{ patient[9] }}</p>
+                    </p>
+                    <p class="mb-0 text-muted small">Assigned Department: {{ department if department else 'General' }}</p>
+                </div>
+            </div>
+        </div>
+<div class="service-details">
+    <h6 class="text-uppercase fw-bold text-muted mb-3 small">Service & Routing</h6>
+    <div class="row">
+        <div class="col-md-12">
+            <p><strong>Primary Complaint:</strong> {{ patient['disease_summary'] }}</p>
+            
+            <div class="alert alert-info py-2">
+                <p class="mb-0">
+                    <i class="fas fa-map-marker-alt me-2"></i> 
+                    <strong>Please Proceed to:</strong> {{ patient['room_number'] if patient['room_number'] else 'Reception' }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+        <div class="service-details">
+            <h6 class="text-uppercase fw-bold text-muted mb-3 small">Service & Routing</h6>
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Primary Complaint/Diagnosis:</strong> {{ patient[5] }}</p>
+                    <p class="text-primary"><strong><i class="fas fa-map-marker-alt"></i> Please Proceed to:</strong> {{ room }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-end">
+            <div class="doctor-signature no-print">
+                <p class="mb-0 text-muted small">Authorized Signature</p>
+                <div style="border-bottom: 1px solid #ccc; width: 150px; height: 40px;"></div>
+            </div>
+            <div class="text-end">
+                <div class="total-box">
+                    <p class="mb-0 small text-muted">Amount Due:</p>
+                    <h4 class="total">Rs. {{ "{:,.0f}".format(patient[6]) if patient[6] else 0 }}</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5 no-print">
+            <button onclick="window.print()" class="btn btn-primary px-4 rounded-pill">
+                <i class="fas fa-print me-2"></i>Print Invoice
+            </button>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary px-4 rounded-pill ms-2">
+                <i class="fas fa-arrow-left me-2"></i>Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>

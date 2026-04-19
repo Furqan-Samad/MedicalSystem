@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSystem Pro | Command Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --primary-dark: #0f172a;
+            --accent-blue: #3b82f6;
+            --sidebar-width: 260px;
+        }
+
+        body { 
+            background-color: #f8fafc; 
+            font-family: 'Inter', sans-serif; 
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+
+        /* Modern Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary-dark);
+            height: 100vh;
+            position: fixed;
+            left: 0; top: 0;
+            padding: 2rem 1.5rem;
+            color: white;
+            z-index: 1000;
+        }
+
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item {
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            color: #94a3b8;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+        }
+
+        .nav-item i { margin-right: 12px; width: 20px; }
+
+        /* Content Area */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2.5rem;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        .header-card {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 24px;
+            padding: 2.5rem;
+            color: white;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .glass-table-card {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #e2e8f0;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .patient-row:hover { background-color: #f1f5f9; cursor: pointer; }
+
+        .btn-modern-primary {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .badge-diagnosis {
+            background: #eff6ff;
+            color: #1d4ed8;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .critical-alert {
+            background: #fee2e2;
+            border-left: 5px solid #ef4444;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --background: #f1f5f9;
+            --sidebar-bg: #0f172a;
+        }
+
+        body { 
+            background-color: var(--background); 
+            font-family: 'Inter', sans-serif; 
+            color: #1e293b;
+        }
+
+        /* Modern Glassmorphism Cards */
+        .stats-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .stats-card:hover { transform: translateY(-5px); }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Advanced Table Styling */
+        .table-container {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+        }
+
+        .table thead th {
+            background: #f8fafc;
+            border-bottom: none;
+            color: var(--secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .patient-row { border-bottom: 1px solid #f1f5f9; }
+        .patient-row:last-child { border-bottom: none; }
+
+        /* Badge Design */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand-logo">
+        <i class="fas fa-heart-pulse text-primary me-2"></i> MedPro.ai
+    </div>
+    <nav>
+        <a href="/" class="nav-item {{ 'active' if request.path == '/' }}">
+            <i class="fas fa-columns"></i> Dashboard
+        </a>
+        
+        <a href="/lab_dashboard" class="nav-item {{ 'active' if request.path == '/lab_dashboard' }}">
+            <i class="fas fa-microscope"></i> Lab Portal
+            {% if critical_count > 0 %}
+            <span class="badge rounded-pill bg-danger ms-auto" style="font-size: 0.7rem;">
+                {{ critical_count }}
+            </span>
+            {% endif %}
+        </a>
+        
+        <a href="/patients_list" class="nav-item {{ 'active' if request.path == '/patients_list' }}">
+            <i class="fas fa-user-injured"></i> Patients
+        </a>
+        
+        <a href="/schedule" class="nav-item {{ 'active' if request.path == '/schedule' }}">
+            <i class="fas fa-calendar-check"></i> Schedule
+        </a>
+        
+        <a href="/all_reports" class="nav-item {{ 'active' if request.path == '/all_reports' }}">
+            <i class="fas fa-file-medical"></i> Reports
+        </a>
+        
+        <a href="/consultant_room" class="nav-item {{ 'active' if request.path == '/consultant_room' }}">
+            <i class="fas fa-user-md"></i> Consultant Room
+        </a>
+        
+        <a href="/archive" class="nav-item {{ 'active' if request.path == '/archive' }}">
+            <i class="fas fa-archive"></i> Archive / History
+        </a>
+        
+        <hr style="border-color: rgba(255,255,255,0.1)">
+        
+        <a href="/logout" class="nav-item text-danger">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </nav>
+</aside>
+
+    <main class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="fw-bold mb-0">Good Morning, {{ session['username'] }} 👋</h4>
+                <p class="text-muted small">Welcome to MedSystem Pro</p>
+            </div>
+        </div>
+
+        {% if alerts %}
+        {% for alert in alerts %}
+        <div class="critical-alert">
+            <i class="fas fa-exclamation-triangle me-3 fa-lg"></i>
+            <div>
+                <strong>CRITICAL LAB ALERT:</strong> Patient <b>{{ alert[0] }}</b> has a life-threatening <b>{{ alert[1] }}</b> result: <span class="badge bg-danger ms-2">{{ alert[2] }}</span>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="header-card">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="fw-bold">Hospital Overview</h2>
+                    <p class="opacity-75">You have processed {{ patients|length }} patients. Systems are nominal.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="icon-box bg-primary-subtle text-primary">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <p class="text-secondary small fw-bold mb-1">Total Patients</p>
+                    <h3 class="fw-bold mb-0">{{ patients|length }}</h3>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="icon-box bg-success-subtle text-success">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <p class="text-secondary small fw-bold mb-1">Total Revenue</p>
+                    <h3 class="fw-bold mb-0">Rs. {{ "{:,.0f}".format(revenue) }}</h3>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="icon-box bg-danger-subtle text-danger">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <p class="text-secondary small fw-bold mb-1">High Risk Cases</p>
+                    <h3 class="fw-bold mb-0">{{ high_risk_count }}</h3>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="icon-box bg-warning-subtle text-warning">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <p class="text-secondary small fw-bold mb-1">Clinic Status</p>
+                    <h3 class="fw-bold mb-0" id="liveTime">09:00 AM</h3>
+                </div>
+            </div>
+        </div>
+
+      <div class="row g-4">
+    <div class="col-lg-4">
+        <div class="glass-table-card shadow-sm">
+            <h5 class="fw-bold mb-4 text-primary"><i class="fas fa-user-plus me-2"></i>Patient Check-in</h5>
+            <form action="/add_patient" method="POST">
+                <div class="mb-3">
+                    <label class="small fw-600 text-muted mb-1">Full Name</label>
+                    <input type="text" name="name" class="form-control bg-light border-0 py-2" required>
+                </div>
+                
+                <div class="row g-2 mb-3">
+                    <div class="col-8">
+                        <label class="small fw-600 text-muted mb-1">Contact</label>
+                        <input type="text" name="phone" class="form-control bg-light border-0 py-2" required>
+                    </div>
+                    <div class="col-4">
+                        <label class="small fw-600 text-muted mb-1">Age</label>
+                        <input type="number" name="age" class="form-control bg-light border-0 py-2" required>
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md-7">
+                        <label class="small fw-600 text-muted mb-1">Consultant Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0"><i class="fas fa-user-md text-primary"></i></span>
+                            <input type="text" name="assigned_doctor_name" class="form-control bg-light border-0" placeholder="e.g. Dr. Furqan" required>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label class="small fw-600 text-muted mb-1">Room No.</label>
+                        <input type="text" name="room_number" class="form-control bg-light border-0" placeholder="e.g. 101" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="small fw-bold mb-1">Service Fee (Rs.)</label>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text bg-light border-0">Rs.</span>
+                        <input type="number" id="feeInput" name="total_bill" class="form-control bg-light border-0" placeholder="0" required>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" onclick="setFee(500)">500</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" onclick="setFee(1200)">1200</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" onclick="setFee(2500)">2500</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-modern-primary w-100 shadow-sm mt-3">Confirm & Print Invoice</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="glass-table-card shadow-sm h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0 text-primary"><i class="fas fa-clock me-2"></i>Live Patient Queue</h5>
+                <span class="badge bg-primary rounded-pill">{{ patients|length }} Waiting</span>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="bg-light">
+                        <tr class="text-muted small text-uppercase">
+                            <th>ID</th>
+                            <th>Patient Details</th>
+                            <th>Consultant</th>
+                            <th>Room</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in patients %}
+                        <tr>
+                            <td class="fw-bold">#{{ patient['id'] }}</td>
+                            <td>
+                                <div class="fw-bold">{{ patient['name'] }}</div>
+                                <div class="small text-muted">{{ patient['phone'] }}</div>
+                            </td>
+                            <td>Dr. {{ patient['assigned_doctor'] }}</td>
+                            <td><span class="badge bg-soft-info text-info border border-info px-3">{{ patient['room_number'] }}</span></td>
+                            <td class="text-end">
+                                <a href="/print_invoice/{{ patient['id'] }}" target="_blank" class="btn btn-sm btn-light">
+                                    <i class="fas fa-print text-primary"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+            <div class="col-lg-8">
+                <div class="glass-table-card h-100">
+                    <h5 class="fw-bold mb-4">Live Patient Queue</h5>
+                    <div class="mb-4">
+                        <div class="input-group search-bar shadow-sm" style="border-radius: 15px; overflow: hidden;">
+                            <span class="input-group-text bg-white border-0"><i class="fas fa-search text-muted"></i></span>
+                            <input type="text" id="smartSearch" class="form-control border-0 py-3" placeholder="Search names, diseases, or keywords...">
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr class="text-muted small text-uppercase">
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Age</th>
+                                    <th>Diagnosis</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for patient in patients %}
+                                <tr class="patient-row">
+                                    <td>{{ patient[0] }}</td>
+                                    <td>{{ patient[1] }}</td>
+                                    <td>{{ patient[2] }}</td>
+                                    <td class="age-cell">{{ patient[3] }}</td>
+                                    <td>
+                                        {% set summary = patient[5]|string %}
+                                        
+                                        {% if 'Emergency' in summary or 'Critical' in summary %}
+                                            <span class="badge bg-danger">Critical</span>
+                                        {% elif 'Follow-up' in summary %}
+                                            <span class="badge bg-info text-dark">Follow-up</span>
+                                        {% else %}
+                                            <span class="badge bg-success">Routine</span>
+                                        {% endif %}
+                                        
+                                        {{ patient[5] if patient[5] else 'No summary provided' }}
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="/print_invoice/{{ patient[0] }}" target="_blank" class="btn btn-outline-dark btn-sm rounded-pill px-3 me-2">
+                                            <i class="fas fa-print me-1"></i> Invoice
+                                        </a>
+                                        <div class="d-flex gap-2">
+                                            <a href="/delete_patient/{{ patient[0] }}" 
+                                               class="btn btn-sm btn-outline-warning border-0" 
+                                               title="Soft Delete (Archive)"
+                                               onclick="return confirm('Archive this patient? They will be hidden but kept in the database.')">
+                                                <i class="fas fa-archive"></i>
+                                            </a>
+
+                                            <a href="/hard_delete_patient/{{ patient[0] }}" 
+                                               class="btn btn-sm btn-outline-danger border-0" 
+                                               title="Hard Delete (Permanent)"
+                                               onclick="return confirm('CRITICAL: Permanently delete this patient? This cannot be undone!')">
+                                                <i class="fas fa-fire-alt"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="glass-card p-4" style="background: white; border-radius: 20px; border: 1px solid #e2e8f0;">
+                    <h5 class="fw-bold mb-3">Patient Distribution by Diagnosis</h5>
+                    <div style="height: 300px;">
+                        <canvas id="analyticsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label class="small fw-bold mb-1">Consultant Name</label>
+        <input type="text" name="assigned_doctor_name" class="form-control bg-light border-0" placeholder="e.g. Dr. Furqan" required>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label class="small fw-bold mb-1">Room / Booth No.</label>
+        <input type="text" name="room_number" class="form-control bg-light border-0" placeholder="e.g. Room 04 or OPD-1" required>
+    </div>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('analyticsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ labels|tojson }},
+                datasets: [{
+                    label: 'Number of Patients',
+                    data: {{ values|tojson }},
+                    backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    responsive: {
+                        maintainAspectRatio: false
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, grid: { display: false } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Add this to your index.html script section
+        document.getElementById('smartSearch').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll('.patient-row');
+
+            rows.forEach(row => {
+                let text = row.innerText.toLowerCase();
+                
+                // Logic for the 'elderly' keyword
+                if (filter === 'elderly') {
+                    let ageCell = row.querySelector('.age-cell');
+                    let age = ageCell ? parseInt(ageCell.innerText) : 0;
+                    row.style.display = (age > 60) ? "" : "none";
+                } 
+                // Default search for names/diseases
+                else {
+                    row.style.display = text.includes(filter) ? "" : "none";
+                }
+            });
+        });
+
+        // Simple Live Clock logic
+        setInterval(() => {
+            const timeElement = document.getElementById('liveTime');
+            if (timeElement) {
+                timeElement.innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            }
+        }, 1000);
+
+        function setFee(amount) {
+            // Find the input by ID and update its value
+            const feeField = document.getElementById('feeInput');
+            feeField.value = amount;
+            
+            // Add a small visual feedback (blink effect)
+            feeField.style.backgroundColor = '#e0e7ff';
+            setTimeout(() => {
+                feeField.style.backgroundColor = '#f8fafc';
+            }, 200);
+        }
+    </script>
+</body>
+</html>

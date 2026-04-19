@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MedPro | Secure Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            font-family: 'Inter', sans-serif; margin: 0;
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem; border-radius: 24px; width: 100%; max-width: 400px;
+            color: white; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+        .form-control {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); color: white !important;
+            padding: 0.8rem 1.2rem; border-radius: 12px;
+        }
+        .form-control::placeholder { color: rgba(255,255,255,0.4); }
+        .form-control:focus { background: rgba(255,255,255,0.2); border-color: #3b82f6; box-shadow: none; }
+        .btn-login {
+            background: #3b82f6; border: none; padding: 0.8rem;
+            border-radius: 12px; font-weight: 700; transition: 0.3s; margin-top: 1rem;
+        }
+        .btn-login:hover { background: #2563eb; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="login-card text-center">
+        <h2 class="fw-bold mb-4">MedPro<span class="text-primary">.ai</span></h2>
+        <p class="text-white-50 mb-5">Hospital Command Center</p>
+        
+        {% if error %}<div class="alert alert-danger py-2 small" style="background: rgba(220, 53, 69, 0.2); border: none; color: #ff8080;">{{ error }}</div>{% endif %}
+        
+        <form action="/login" method="POST">
+            <div class="mb-3 text-start">
+                <label class="small text-white-50 mb-2">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+            </div>
+            <div class="mb-4 text-start">
+                <label class="small text-white-50 mb-2">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 btn-login">Sign In</button>
+        </form>
+    </div>
+</body>
+</html>

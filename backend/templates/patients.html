@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedPro | Patient Directory</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary-dark: #0f172a; --sidebar-width: 260px; }
+        body { background-color: #f8fafc; font-family: 'Inter', sans-serif; }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary-dark);
+            height: 100vh;
+            position: fixed;
+            padding: 2rem 1.5rem;
+            color: white;
+        }
+
+        .nav-item {
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            color: #94a3b8;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item.active { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2.5rem;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        .glass-card {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #e2e8f0;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .patient-avatar {
+            width: 45px;
+            height: 45px;
+            background: #e0e7ff;
+            color: #4338ca;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="mb-5 fw-bold fs-4"><i class="fas fa-heart-pulse text-primary me-2"></i> MedPro.ai</div>
+        <nav>
+            <a href="/" class="nav-item"><i class="fas fa-columns me-2"></i> Dashboard</a>
+            <a href="/lab_dashboard" class="nav-item"><i class="fas fa-microscope me-2"></i> Lab Portal</a>
+            <a href="/patients_list" class="nav-item active"><i class="fas fa-user-injured me-2"></i> Patients</a>
+            <a href="/schedule" class="nav-item"><i class="fas fa-calendar-check me-2"></i> Schedule</a>
+            <a href="/all_reports" class="nav-item"><i class="fas fa-file-medical me-2"></i> Reports</a>
+            <hr style="border-color: rgba(255,255,255,0.1)">
+            <a href="/logout" class="nav-item text-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold">Patient Directory</h3>
+            <span class="badge bg-primary rounded-pill px-3 py-2">{{ patients|length }} Total Records</span>
+        </div>
+
+        <div class="glass-card">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Patient Detail</th>
+                            <th>Contact</th>
+                            <th>Demographics</th>
+                            <th>Clinical Summary</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in patients %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="patient-avatar me-3">{{ patient[1][0] }}</div>
+                                    <div>
+                                        <div class="fw-bold text-dark">{{ patient[1] }}</div>
+                                        <div class="small text-muted">PID-00{{ patient[0] }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="small">{{ patient[2] }}</td>
+                            <td>
+                                <span class="badge bg-light text-dark border">{{ patient[3] }} Yrs</span>
+                                <span class="badge bg-light text-dark border">{{ patient[4] }}</span>
+                            </td>
+                            <td>
+                                <div class="text-truncate" style="max-width: 200px;" title="{{ patient[5] }}">
+                                    {{ patient[5] }}
+                                </div>
+                            </td>
+                            <td class="text-end">
+                                <a href="/print_bill/{{ patient[0] }}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                    <i class="fas fa-print me-1"></i> Report
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,100 +1,96 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>MedPro | Lab Portal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { background: #f1f5f9; font-family: 'Inter', sans-serif; display: flex; margin: 0; }
-        .sidebar { width: 260px; background: #0f172a; height: 100vh; position: fixed; padding: 2rem; color: white; }
-        .main { margin-left: 260px; width: 100%; padding: 3rem; }
-        .glass-card { background: white; border-radius: 20px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 2rem; }
-        .nav-link { color: #94a3b8; text-decoration: none; display: block; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
-        .nav-link:hover { background: rgba(255,255,255,0.1); color: white; }
-        .btn-print { background: #6366f1; color: white; transition: 0.3s; }
-        .btn-print:hover { background: #4f46e5; color: white; transform: translateY(-2px); }
-    </style>
+<meta charset="UTF-8">
+<title>MedPro | Lab Portal</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body { background:#f1f5f9; display:flex; margin:0; font-family:Arial; }
+.sidebar { width:260px; background:#0f172a; height:100vh; position:fixed; padding:2rem; color:white; }
+.main { margin-left:260px; width:100%; padding:2rem; }
+.glass-card { background:white; border-radius:15px; padding:20px; }
+</style>
 </head>
+
 <body>
-    <div class="sidebar">
-        <h4 class="fw-bold mb-5">MedPro <span class="text-primary">Lab</span></h4>
-        <a href="/" class="nav-link"><i class="fas fa-arrow-left me-2"></i> Back to Dashboard</a>
-        <a href="/lab_dashboard" class="nav-link active"><i class="fas fa-flask me-2"></i> Lab Entry</a>
+
+<div class="sidebar">
+    <h4>MedPro Lab</h4>
+    <a href="index.html" style="color:#ccc;">Dashboard</a>
+</div>
+
+<div class="main">
+
+<div class="glass-card mb-3">
+    <h5>Search Patient by ID</h5>
+    <input type="number" id="searchId" class="form-control mb-2" placeholder="Enter ID">
+    <button onclick="searchPatient()" class="btn btn-primary">Search</button>
+</div>
+
+<div id="patientSection" style="display:none;">
+    <div class="glass-card mb-3">
+        <h4 id="pname"></h4>
+        <p>ID: <span id="pid"></span></p>
+        <p>Contact: <span id="pphone"></span></p>
+        <p>Age/Gender: <span id="page"></span></p>
     </div>
 
-    <div class="main">
-        <div class="glass-card mb-4">
-            <h5 class="fw-bold mb-3">Search Patient by Invoice/ID</h5>
-            <form action="/lab_dashboard" method="POST" class="d-flex gap-2">
-                <input type="text" name="search_invoice" class="form-control rounded-pill px-4" placeholder="Enter Patient ID (e.g. 1)" required>
-                <button type="submit" class="btn btn-primary rounded-pill px-4">Fetch Details</button>
-            </form>
-        </div>
+    <div class="glass-card">
+        <h5>Enter Test Findings</h5>
 
-        {% if patient %}
-        <div class="row g-4">
-            <div class="col-md-5">
-                <div class="glass-card h-100 position-relative">
-                    <h6 class="text-uppercase text-muted small fw-bold mb-3">Patient Profile</h6>
-                    
-                    <h3 class="fw-bold text-primary">{{ patient[1] }}</h3>
-                    <p class="mb-1"><strong>ID:</strong> #P-00{{ patient[0] }}</p>
-                    <p class="mb-1"><strong>Contact:</strong> {{ patient[2] }}</p>
-                    <p class="mb-1"><strong>Age/Gender:</strong> {{ patient[3] }}Y / {{ patient[4] }}</p>
-                    <hr>
-                    
-                    <div class="mt-4">
-                        <a href="/print_bill/{{ patient[0] }}" target="_blank" class="btn btn-print w-100 py-2 rounded-pill fw-bold shadow-sm">
-                            <i class="fas fa-file-pdf me-2"></i> Generate & Print Report
-                        </a>
-                        <p class="text-center text-muted small mt-2">Downloads as PDF with Lab Results</p>
-                    </div>
-                </div>
-            </div>
+        <input id="testName" class="form-control mb-2" placeholder="Test Name">
+        <input id="testResult" class="form-control mb-2" placeholder="Result">
+        <input id="refRange" class="form-control mb-2" placeholder="Reference Range">
 
-            <div class="col-md-7">
-                <div class="glass-card">
-                    <h5 class="fw-bold mb-4 text-success"><i class="fas fa-edit me-2"></i>Enter Test Findings</h5>
-                    <form action="/upload_result/{{ patient[0] }}" method="POST">
-                        <div class="mb-3">
-                            <label class="small fw-bold">Test Name</label>
-                            <input type="text" name="test_name" class="form-control bg-light border-0" placeholder="e.g. CBC, Lipid Profile, Glucose" required>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col">
-                                <label class="small fw-bold">Result Value</label>
-                                <input type="text" name="test_result" class="form-control bg-light border-0" placeholder="e.g. 140 mg/dL" required>
-                            </div>
-                            <div class="col">
-                                <label class="small fw-bold">Ref. Range</label>
-                                <input type="text" name="ref_range" class="form-control bg-light border-0" placeholder="e.g. 70-110">
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="small fw-bold">Severity Status</label>
-                            <select name="status" class="form-select bg-light border-0">
-                                <option value="Completed">Normal / Completed</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Critical" class="text-danger">CRITICAL (Alert Doctor)</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-success w-100 fw-bold py-3 rounded-3 shadow-sm">
-                            <i class="fas fa-cloud-upload-alt me-2"></i> Submit to Central Records
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        {% else %}
-        <div class="text-center py-5 mt-5">
-            <div class="mb-4">
-                <i class="fas fa-microscope fa-4x" style="color: #e2e8f0;"></i>
-            </div>
-            <h4 class="text-muted">No Patient Selected</h4>
-            <p class="text-muted small">Enter an ID in the search bar above to begin test entry or print a report.</p>
-        </div>
-        {% endif %}
+        <select id="status" class="form-control mb-3">
+            <option>Completed</option>
+            <option>Pending</option>
+            <option>Critical</option>
+        </select>
+
+        <button onclick="submitResult()" class="btn btn-success">Submit</button>
     </div>
+</div>
+
+<div id="noData" class="text-center mt-5">
+    <h5>No Patient Selected</h5>
+</div>
+
+</div>
+
+<script>
+// Fake database
+const patients = {
+    1: ["Ali Khan","03001234567","25 Male"],
+    2: ["Sara Ahmed","03111234567","30 Female"],
+    3: ["Usman Ali","03211234567","40 Male"]
+};
+
+function searchPatient(){
+    const id = document.getElementById("searchId").value;
+    const p = patients[id];
+
+    if(p){
+        document.getElementById("patientSection").style.display="block";
+        document.getElementById("noData").style.display="none";
+
+        document.getElementById("pname").innerText = p[0];
+        document.getElementById("pid").innerText = id;
+        document.getElementById("pphone").innerText = p[1];
+        document.getElementById("page").innerText = p[2];
+    } else {
+        alert("Patient not found");
+    }
+}
+
+function submitResult(){
+    alert("Result submitted successfully (demo only)");
+}
+</script>
+
 </body>
 </html>
+```

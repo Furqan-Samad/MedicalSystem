@@ -1,222 +1,66 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedSystem Pro | Archive</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.95);
-            --primary-dark: #0f172a;
-            --accent-blue: #3b82f6;
-            --sidebar-width: 260px;
-        }
-
-        body { 
-            background-color: #f8fafc; 
-            font-family: 'Inter', sans-serif; 
-            color: #1e293b;
-            overflow-x: hidden;
-        }
-
-        /* Modern Sidebar */
+        body { background:#f8fafc; font-family: Arial; }
         .sidebar {
-            width: var(--sidebar-width);
-            background: var(--primary-dark);
-            height: 100vh;
-            position: fixed;
-            left: 0; top: 0;
-            padding: 2rem 1.5rem;
-            color: white;
-            z-index: 1000;
+            width:260px; background:#0f172a; height:100vh;
+            position:fixed; color:white; padding:20px;
         }
-
-        .brand-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 3rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-item {
-            padding: 0.8rem 1rem;
-            border-radius: 12px;
-            color: #94a3b8;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s ease;
-            margin-bottom: 0.5rem;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: rgba(59, 130, 246, 0.15);
-            color: #60a5fa;
-        }
-
-        .nav-item i { margin-right: 12px; width: 20px; }
-
-        /* Content Area */
-        .main-content {
-            margin-left: var(--sidebar-width);
-            padding: 2.5rem;
-            width: calc(100% - var(--sidebar-width));
-        }
-
-        .header-card {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            border-radius: 24px;
-            padding: 2.5rem;
-            color: white;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .glass-table-card {
-            background: white;
-            border-radius: 24px;
-            border: 1px solid #e2e8f0;
-            padding: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-        }
-
-        .patient-row:hover { background-color: #f1f5f9; cursor: pointer; }
-
-        .btn-modern-primary {
-            background: var(--accent-blue);
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 12px;
-            font-weight: 600;
-        }
-
-        .badge-diagnosis {
-            background: #eff6ff;
-            color: #1d4ed8;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
+        .main-content { margin-left:260px; padding:20px; }
+        .nav-item { display:block; color:#94a3b8; margin-bottom:10px; text-decoration:none; }
+        .nav-item:hover { color:#3b82f6; }
     </style>
 </head>
+
 <body>
 
-  <aside class="sidebar">
-    <div class="brand-logo">
-        <i class="fas fa-heart-pulse text-primary me-2"></i> MedPro.ai
-    </div>
-    <nav>
-        <a href="/" class="nav-item">
-            <i class="fas fa-columns"></i> Dashboard
-        </a>
-        
-        <a href="/lab_dashboard" class="nav-item">
-            <i class="fas fa-microscope"></i> Lab Portal
-        </a>
-        
-        <a href="/patients_list" class="nav-item">
-            <i class="fas fa-user-injured"></i> Patients
-        </a>
-        
-        <a href="/schedule" class="nav-item">
-            <i class="fas fa-calendar-check"></i> Schedule
-        </a>
-        
-        <a href="/all_reports" class="nav-item">
-            <i class="fas fa-file-medical"></i> Reports
-        </a>
-        
-        <a href="/archive" class="nav-item active">
-            <i class="fas fa-archive"></i> Archive
-        </a>
-        
-        <hr style="border-color: rgba(255,255,255,0.1)">
-        
-        <a href="/logout" class="nav-item text-danger">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </a>
-    </nav>
-</aside>
+<!-- Sidebar -->
+<div class="sidebar">
+    <h3>MedPro</h3>
+    <a href="#" class="nav-item">Dashboard</a>
+    <a href="#" class="nav-item">Patients</a>
+    <a href="#" class="nav-item">Archive</a>
+</div>
 
-    <main class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h4 class="fw-bold mb-0">Archived Patients</h4>
-                <p class="text-muted small">View and manage deactivated patient records</p>
-            </div>
-        </div>
+<!-- Main -->
+<div class="main-content">
 
-        <div class="header-card">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h2 class="fw-bold">Patient Archive</h2>
-                    <p class="opacity-75">You have {{ patients|length }} archived patients.</p>
-                </div>
-            </div>
-        </div>
+    <h2>Archived Patients</h2>
+    <p>Total Archived Patients: 3</p>
 
-        <div class="row g-4">
-            <div class="col-lg-12">
-                <div class="glass-table-card h-100">
-                    <h5 class="fw-bold mb-4">Archived Patient Records</h5>
-                    <div class="table-responsive">
-                        <table class="table table-borderless">
-                            <thead>
-                                <tr class="text-muted small text-uppercase">
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>Age</th>
-                                    <th>Diagnosis</th>
-                                    <th class="text-end">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for patient in patients %}
-                                <tr class="patient-row">
-                                    <td>{{ patient[0] }}</td>
-                                    <td>{{ patient[1] }}</td>
-                                    <td>{{ patient[2] }}</td>
-                                    <td>{{ patient[3] }}</td>
-                                    <td>
-                                        {% if 'Emergency' in patient[5] or 'Critical' in patient[5] %}
-                                            <span class="badge bg-danger">Critical</span>
-                                        {% elif 'Follow-up' in patient[5] %}
-                                            <span class="badge bg-info text-dark">Follow-up</span>
-                                        {% else %}
-                                            <span class="badge bg-success">Routine</span>
-                                        {% endif %}
-                                        {{ patient[5] }}
-                                    </td>
-                                    <td class="text-end">
-                                        <a href="/restore_patient/{{ patient[0] }}" class="btn btn-sm btn-success rounded-pill me-2">
-                                            <i class="fas fa-undo me-1"></i> Restore
-                                        </a>
-                                        <a href="/hard_delete_patient/{{ patient[0] }}" 
-                                           class="btn btn-sm btn-outline-danger border-0" 
-                                           title="Hard Delete (Permanent)"
-                                           onclick="return confirm('CRITICAL: Permanently delete this archived patient? This cannot be undone!')">
-                                            <i class="fas fa-fire-alt"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th><th>Name</th><th>Phone</th><th>Age</th><th>Diagnosis</th>
+            </tr>
+        </thead>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <tbody>
+            <!-- STATIC DATA (instead of Flask loop) -->
+            <tr>
+                <td>1</td><td>Ali Khan</td><td>03001234567</td><td>25</td><td>Routine Check</td>
+            </tr>
+
+            <tr>
+                <td>2</td><td>Sara Ahmed</td><td>03111234567</td><td>30</td><td>Follow-up</td>
+            </tr>
+
+            <tr>
+                <td>3</td><td>Usman Ali</td><td>03211234567</td><td>40</td><td>Critical</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
 </body>
 </html>
+```

@@ -1,252 +1,110 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedSystem Pro | Consultant Room</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.95);
-            --primary-dark: #0f172a;
-            --accent-blue: #3b82f6;
-            --sidebar-width: 260px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consultant Room</title>
 
-        body { 
-            background-color: #f8fafc; 
-            font-family: 'Inter', sans-serif; 
-            color: #1e293b;
-            overflow-x: hidden;
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        /* Modern Sidebar */
-        .sidebar {
-            width: var(--sidebar-width);
-            background: var(--primary-dark);
-            height: 100vh;
-            position: fixed;
-            left: 0; top: 0;
-            padding: 2rem 1.5rem;
-            color: white;
-            z-index: 1000;
-        }
-
-        .brand-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 3rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-item {
-            padding: 0.8rem 1rem;
-            border-radius: 12px;
-            color: #94a3b8;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s ease;
-            margin-bottom: 0.5rem;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: rgba(59, 130, 246, 0.15);
-            color: #60a5fa;
-        }
-
-        .nav-item i { margin-right: 12px; width: 20px; }
-
-        /* Content Area */
-        .main-content {
-            margin-left: var(--sidebar-width);
-            padding: 2.5rem;
-            width: calc(100% - var(--sidebar-width));
-        }
-
-        .glass-table-card {
-            background: white;
-            border-radius: 24px;
-            border: 1px solid #e2e8f0;
-            padding: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-        }
-
-        .patient-row:hover { background-color: #f1f5f9; cursor: pointer; }
-        .patient-row.selected { background-color: #dbeafe; }
-
-        .btn-modern-primary {
-            background: var(--accent-blue);
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 12px;
-            font-weight: 600;
-        }
-    </style>
+<style>
+body { background:#f8fafc; font-family: Arial; }
+.sidebar {
+    width:260px; background:#0f172a; height:100vh;
+    position:fixed; color:white; padding:20px;
+}
+.main-content { margin-left:260px; padding:20px; }
+.nav-item { display:block; color:#94a3b8; margin-bottom:10px; text-decoration:none; }
+.nav-item:hover { color:#3b82f6; }
+.selected { background:#dbeafe !important; }
+</style>
 </head>
+
 <body>
 
-  <aside class="sidebar">
-    <div class="brand-logo">
-        <i class="fas fa-heart-pulse text-primary me-2"></i> MedPro.ai
-    </div>
-    <nav>
-        <a href="/" class="nav-item">
-            <i class="fas fa-columns"></i> Dashboard
-        </a>
-        
-        <a href="/lab_dashboard" class="nav-item">
-            <i class="fas fa-microscope"></i> Lab Portal
-        </a>
-        
-        <a href="/patients_list" class="nav-item">
-            <i class="fas fa-user-injured"></i> Patients
-        </a>
-        
-        <a href="/schedule" class="nav-item">
-            <i class="fas fa-calendar-check"></i> Schedule
-        </a>
-        
-        <a href="/all_reports" class="nav-item">
-            <i class="fas fa-file-medical"></i> Reports
-        </a>
-        
-        <a href="/consultant_room" class="nav-item active">
-            <i class="fas fa-user-md"></i> Consultant Room
-        </a>
-        
-        <a href="/archive" class="nav-item">
-            <i class="fas fa-archive"></i> Archive / History
-        </a>
-        
-        <hr style="border-color: rgba(255,255,255,0.1)">
-        
-        <a href="/logout" class="nav-item text-danger">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </a>
-    </nav>
-</aside>
+<div class="sidebar">
+    <h3>MedPro</h3>
+    <a href="index.html" class="nav-item">Dashboard</a>
+    <a href="#" class="nav-item">Patients</a>
+    <a href="#" class="nav-item active">Consultant Room</a>
+</div>
 
-    <main class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h4 class="fw-bold mb-0">Consultant Room</h4>
-                <p class="text-muted small">Manage patient consultations and assign departments</p>
-            </div>
-        </div>
+<div class="main-content">
 
-        <div class="row g-4">
-            <div class="col-lg-12">
-                <div class="glass-table-card h-100">
-                    <h5 class="fw-bold mb-4">Waiting List</h5>
-                    <div class="table-responsive">
-                        <table class="table table-borderless">
-                            <thead>
-                                <tr class="text-muted small text-uppercase">
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Age</th>
-                                    <th>Gender</th>
-                                    <th>Diagnosis</th>
-                                    <th>Report</th>
-                                    <th class="text-end">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for patient in patients %}
-                                <tr class="patient-row" onclick="selectPatient('{{ patient[0] }}', this)" style="cursor: pointer;">
-                                    <td>{{ patient[0] }}</td>
-                                    <td>{{ patient[1] }}</td>
-                                    <td>{{ patient[2] }}</td>
-                                    <td>{{ patient[3] }}</td>
-                                    <td>{{ patient[4] }}</td>
-                                    <td>
-                                        {% if patient[5] %}
-                                            <a href="/static/uploads/reports/{{ patient[5] }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-file-pdf"></i> View
-                                            </a>
-                                        {% else %}
-                                            <span class="text-muted">No report</span>
-                                        {% endif %}
-                                    </td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-success me-2" onclick="assignDepartment({{ patient[0] }}, 'Radiology')">
-                                            Radiology
-                                        </button>
-                                        <button class="btn btn-sm btn-info" onclick="assignDepartment({{ patient[0] }}, 'Pathology')">
-                                            Pathology
-                                        </button>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+<h3>Consultant Room</h3>
 
-        <!-- Prescription Form Section -->
-        <div class="row g-4 mt-4">
-            <div class="col-lg-12">
-                <div class="glass-table-card">
-                    <h5 class="fw-bold mb-4">Prescription & Diagnosis</h5>
-                    <form action="/save_prescription" method="POST">
-                        <input type="hidden" name="patient_id" id="active-patient-id" value="">
-                        
-                        <div class="mb-3">
-                            <label for="diagnosis" class="form-label">Diagnosis</label>
-                            <textarea name="diagnosis" id="diagnosis" class="form-control" rows="3" placeholder="Enter diagnosis..."></textarea>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="prescription" class="form-label">Prescription</label>
-                            <textarea name="prescription" id="prescription" class="form-control" rows="5" placeholder="Enter prescription..."></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-modern-primary">Save Rx</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </main>
+<table class="table">
+<thead>
+<tr>
+<th>ID</th><th>Name</th><th>Age</th><th>Gender</th><th>Diagnosis</th>
+</tr>
+</thead>
+
+<tbody id="patientTable">
+</tbody>
+</table>
+
+<h5>Prescription</h5>
+
+<textarea id="diagnosis" class="form-control mb-2" placeholder="Diagnosis"></textarea>
+<textarea id="prescription" class="form-control mb-2" placeholder="Prescription"></textarea>
+
+<button onclick="saveData()" class="btn btn-primary">Save</button>
+
+</div>
 
 <script>
-    function selectPatient(patientId, rowElement) {
-        // 1. Remove highlight from all other rows
-        const allRows = document.querySelectorAll('.patient-row');
-        allRows.forEach(row => {
-            row.style.backgroundColor = "transparent";
-            row.classList.remove('selected');
-        });
+// STATIC DATA (instead of Flask)
+const patients = [
+    [1,"Ali Khan",25,"Male","Flu"],
+    [2,"Sara Ahmed",30,"Female","Follow-up"],
+    [3,"Usman Ali",40,"Male","Critical"]
+];
 
-        // 2. Highlight the selected row (Visual proof for doctor)
-        rowElement.style.backgroundColor = "#dbeafe";
-        rowElement.classList.add('selected');
+let selectedPatient = null;
 
-        // 3. Find the hidden input and FORCE the value
-        const idInput = document.getElementById('active-patient-id');
-        idInput.value = patientId;
+// Render table
+const table = document.getElementById("patientTable");
 
-        // 4. Debug: This will show a small alert at the top of your screen
-        console.log("Captured ID:", patientId);
+patients.forEach(p => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>${p[0]}</td>
+        <td>${p[1]}</td>
+        <td>${p[2]}</td>
+        <td>${p[3]}</td>
+        <td>${p[4]}</td>
+    `;
+
+    row.onclick = () => selectPatient(p[0], row);
+
+    table.appendChild(row);
+});
+
+function selectPatient(id, row){
+    selectedPatient = id;
+
+    document.querySelectorAll("tr").forEach(r => r.classList.remove("selected"));
+    row.classList.add("selected");
+
+    console.log("Selected:", id);
+}
+
+function saveData(){
+    if(!selectedPatient){
+        alert("Select patient first!");
+        return;
     }
 
-    // Double check the form submission
-    document.querySelector('form').onsubmit = function() {
-        const idValue = document.getElementById('active-patient-id').value;
-        if (!idValue) {
-            alert("STOP: You haven't clicked a patient yet! Please click a name in the list first.");
-            return false; // Prevents the form from sending empty data
-        }
-        return true; // Allows the form to send
-    };
+    const diagnosis = document.getElementById("diagnosis").value;
+    const prescription = document.getElementById("prescription").value;
+
+    alert(`Saved for Patient ${selectedPatient}\nDiagnosis: ${diagnosis}\nPrescription: ${prescription}`);
+}
 </script>
+
 </body>
 </html>
+```
